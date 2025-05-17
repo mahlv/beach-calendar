@@ -43,8 +43,8 @@ function ClientOnlyCalendar({ taggedDays, onDayClick }: CalendarProps) {
     const daysInMonth = getDaysInMonth(year, month)
     const firstDayOfMonth = getFirstDayOfMonth(year, month)
 
-    // Calculate days from previous month to show
-    const daysFromPrevMonth = (firstDayOfMonth + 6) % 7 // Ensures Monday as first day of week
+    // Calculate days from previous month to show (Sunday as first day of week)
+    const daysFromPrevMonth = firstDayOfMonth
     
     // Add days from previous month
     if (daysFromPrevMonth > 0) {
@@ -54,7 +54,7 @@ function ClientOnlyCalendar({ taggedDays, onDayClick }: CalendarProps) {
       
       for (let i = daysFromPrevMonth - 1; i >= 0; i--) {
         const day = daysInPrevMonth - i
-        const date = new Date(prevYear, prevMonth, day)
+        const date = new Date(prevYear, prevMonth, day, 12) // Use noon to avoid DST issues
         days.push({
           date,
           dayOfMonth: day,
