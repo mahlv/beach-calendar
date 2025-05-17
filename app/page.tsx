@@ -1,4 +1,11 @@
-import BeachHouseCalendar from "@/components/beach-house-calendar"
+import dynamic from 'next/dynamic';
+import ConvexClientProvider from './ConvexClientProvider';
+
+// Disable SSR for the calendar since it uses browser APIs
+const BeachHouseCalendar = dynamic(
+  () => import('@/components/beach-house-calendar'),
+  { ssr: false }
+);
 
 export default function Home() {
   return (
@@ -8,7 +15,9 @@ export default function Home() {
           <h1 className="text-3xl font-semilight text-center font-nothing text-[5rem] text-[#6CD4FF]">Praia</h1>
           <img src="/assets/gifs/Summer-sun.gif" alt="Sun" className="w-20 h-20" />
         </div>
-        <BeachHouseCalendar />
+        <ConvexClientProvider>
+          <BeachHouseCalendar />
+        </ConvexClientProvider>
       </div>
     </main>
   )

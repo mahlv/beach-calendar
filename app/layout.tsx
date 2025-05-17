@@ -29,8 +29,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="pt-BR" className={`${nothingYouCouldDo.variable} ${firaCode.variable}`}>
-      <body>{children}</body>
+    <html lang="en">
+      <body className={`${nothingYouCouldDo.variable} ${firaCode.variable} font-sans`}>{children}</body>
     </html>
   )
 }

@@ -1,48 +1,24 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
+import { useQuery, useMutation } from "convex/react"
+import { api } from "@/convex/_generated/api"
 import Calendar from "./calendar"
 import ColorPicker from "./color-picker"
 import type { CalendarDay } from "@/types/calendar"
 
-const STORAGE_KEY = 'beachHouseCalendarTaggedDays';
-
 export default function BeachHouseCalendar() {
   const [selectedColor, setSelectedColor] = useState<string>("#3b82f6") // Default to blue
-  const [taggedDays, setTaggedDays] = useState<Record<string, string>>(() => {
-    // Load tagged days from localStorage on initial render
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      return saved ? JSON.parse(saved) : {};
-    }
-    return {};
-  })
-
-  // Save tagged days to localStorage whenever they change
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(taggedDays));
-    }
-  }, [taggedDays]);
+  
+  // Get tags from Convex
+  const taggedDays = useQuery(api.calendar.getTags) || {}
+  const toggleTag = useMutation(api.calendar.toggleTag)
 
   const handleDayClick = (day: CalendarDay) => {
     if (!day.isCurrentMonth || day.isPast) return
 
     const dateKey = day.date.toISOString().split("T")[0]
-
-    setTaggedDays((prev) => {
-      const newTaggedDays = { ...prev }
-
-      // If day is already tagged with selected color, remove the tag
-      if (newTaggedDays[dateKey] === selectedColor) {
-        delete newTaggedDays[dateKey]
-      } else {
-        // Otherwise, tag with selected color
-        newTaggedDays[dateKey] = selectedColor
-      }
-
-      return newTaggedDays
-    })
+    void toggleTag({ date: dateKey, color: selectedColor })
   }
 
   return (
