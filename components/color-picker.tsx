@@ -16,7 +16,7 @@ export default function ColorPicker({ selectedColor, onColorSelect }: ColorPicke
   return (
     <div className="p-4 border-t border-sky-100 bg-sky-50">
       <div className="flex flex-col space-y-3">
-        <h3 className="text-base font-medium text-sky-800" style={{ fontFamily: "'Cascadia Code', monospace" }}>Sua cor:</h3>
+        <h3 className="text-base font-medium text-sky-800 font-fira">Sua cor:</h3>
 
         <div className="flex space-x-4">
           {colors.map((color) => (
@@ -32,7 +32,7 @@ export default function ColorPicker({ selectedColor, onColorSelect }: ColorPicke
             >
               <div className="flex items-center space-x-2">
                 <div className="w-4 h-4 rounded-full" style={{ backgroundColor: color.value }} />
-                <span className="text-base text-sky-800">{color.name}</span>
+                <span className="text-base text-sky-800 font-nothing">{color.name}</span>
               </div>
             </button>
           ))}

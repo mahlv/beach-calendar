@@ -32,7 +32,7 @@ export default function BeachHouseCalendar() {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden border border-sky-100">
       <div className="p-4 bg-sky-50 border-b border-sky-100">
-        <h4 className="text-2xl font-medium text-sky-800 text-center" style={{ fontFamily: "'Cascadia Code Light', monospace", textAlign: "center" }}>Selecione os dias</h4>
+        <h4 className="text-2xl font-medium text-sky-800 text-center font-fira">Selecione os dias</h4>
         
       </div>
 
