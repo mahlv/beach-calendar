@@ -1,13 +1,29 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Calendar from "./calendar"
 import ColorPicker from "./color-picker"
 import type { CalendarDay } from "@/types/calendar"
 
+const STORAGE_KEY = 'beachHouseCalendarTaggedDays';
+
 export default function BeachHouseCalendar() {
   const [selectedColor, setSelectedColor] = useState<string>("#3b82f6") // Default to blue
-  const [taggedDays, setTaggedDays] = useState<Record<string, string>>({})
+  const [taggedDays, setTaggedDays] = useState<Record<string, string>>(() => {
+    // Load tagged days from localStorage on initial render
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      return saved ? JSON.parse(saved) : {};
+    }
+    return {};
+  })
+
+  // Save tagged days to localStorage whenever they change
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(taggedDays));
+    }
+  }, [taggedDays]);
 
   const handleDayClick = (day: CalendarDay) => {
     if (!day.isCurrentMonth || day.isPast) return
