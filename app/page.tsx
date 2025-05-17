@@ -19,6 +19,13 @@ export default function Home() {
             <img src="/assets/gifs/Summer-sun.gif" alt="Sun" className="w-20 h-20" />
           </div>
           <BeachHouseCalendarClient />
+          <div className="flex justify-center mt-8">
+            <img 
+              src="/assets/gifs/crab.gif" 
+              alt="Crab walking" 
+              className="w-32 h-auto" 
+            />
+          </div>
         </div>
       </main>
     </ConvexClientProvider>
