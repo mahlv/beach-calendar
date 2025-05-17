@@ -32,8 +32,8 @@ export default function BeachHouseCalendar() {
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden border border-sky-100">
       <div className="p-4 bg-sky-50 border-b border-sky-100">
-        <h2 className="text-xl font-medium text-sky-800">Selecione sua cor</h2>
-        <p className="text-sky-600 text-sm mt-1">Clique nos dias para marcar</p>
+        <h4 className="text-2xl font-medium text-sky-800 text-center" style={{ fontFamily: "'Cascadia Code Light', monospace", textAlign: "center" }}>Selecione os dias</h4>
+        
       </div>
 
       <Calendar taggedDays={taggedDays} onDayClick={handleDayClick} />

@@ -2,8 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
+@font-face {
+  font-family: 'Nothing Pena';
+  src: url('/fonts/Nothing-Pena.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cascadia Code';
+  src: url('/fonts/CascadiaCode-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cascadia Code';
+  src: url('/fonts/CascadiaCode-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  html {
+    font-family: 'Nothing Pena', system-ui, sans-serif;
+  }
+  
+  .cascadia-font {
+    font-family: 'Cascadia Code', monospace;
+  }
+  
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 
 @layer utilities {
