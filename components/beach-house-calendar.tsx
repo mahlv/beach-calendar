@@ -7,7 +7,11 @@ import Calendar from "./calendar"
 import ColorPicker from "./color-picker"
 import type { CalendarDay } from "@/types/calendar"
 
-export default function BeachHouseCalendar() {
+interface BeachHouseCalendarProps {
+  isDarkMode: boolean;
+}
+
+export default function BeachHouseCalendar({ isDarkMode }: BeachHouseCalendarProps) {
   const [selectedColor, setSelectedColor] = useState<string>("#3b82f6") // Default to blue
   
   // Get tags from Convex
@@ -22,15 +26,14 @@ export default function BeachHouseCalendar() {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden border border-sky-100">
-      <div className="p-4 bg-sky-50 border-b border-sky-100">
-        <h4 className="text-2xl font-medium text-sky-800 text-center font-fira"></h4>
-        
+    <div className={`${isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-sky-100'} rounded-lg shadow-md overflow-hidden border`}>
+      <div className={`p-4 ${isDarkMode ? 'bg-gray-700 border-gray-600' : 'bg-sky-50 border-sky-100'} border-b`}>
+        <h4 className={`text-2xl font-medium text-center font-fira ${isDarkMode ? 'text-gray-200' : 'text-sky-800'}`}></h4>
       </div>
 
-      <Calendar taggedDays={taggedDays} onDayClick={handleDayClick} />
+      <Calendar taggedDays={taggedDays} onDayClick={handleDayClick} isDarkMode={isDarkMode} />
 
-      <ColorPicker selectedColor={selectedColor} onColorSelect={setSelectedColor} />
+      <ColorPicker selectedColor={selectedColor} onColorSelect={setSelectedColor} isDarkMode={isDarkMode} />
     </div>
   )
 }

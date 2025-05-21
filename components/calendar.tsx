@@ -10,15 +10,16 @@ import { getDaysInMonth, getFirstDayOfMonth, isToday, isPastDay, formatMonthYear
 interface CalendarProps {
   taggedDays: Record<string, string>
   onDayClick: (day: CalendarDay) => void
+  isDarkMode: boolean
 }
 
 // Main Calendar component
-export default function Calendar({ taggedDays, onDayClick }: CalendarProps) {
-  return <ClientOnlyCalendar taggedDays={taggedDays} onDayClick={onDayClick} />
+export default function Calendar({ taggedDays, onDayClick, isDarkMode }: CalendarProps) {
+  return <ClientOnlyCalendar taggedDays={taggedDays} onDayClick={onDayClick} isDarkMode={isDarkMode} />
 }
 
 // Client-side only component to avoid hydration issues
-function ClientOnlyCalendar({ taggedDays, onDayClick }: CalendarProps) {
+function ClientOnlyCalendar({ taggedDays, onDayClick, isDarkMode }: CalendarProps) {
   const [currentDate, setCurrentDate] = useState<Date>(() => new Date())
   const [calendarDays, setCalendarDays] = useState<CalendarDay[]>([])
   const weekdays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"]
@@ -128,24 +129,24 @@ function ClientOnlyCalendar({ taggedDays, onDayClick }: CalendarProps) {
   }
 
   return (
-    <div className="p-4 font-['Nothing_Pena'] w-full">
+    <div className={`p-4 font-['Nothing_Pena'] w-full ${isDarkMode ? 'text-gray-200' : 'text-gray-900'}`}>
       <div className="flex justify-between items-center mb-4">
         <Button
           variant="ghost"
           size="sm"
           onClick={goToPreviousMonth}
-          className="text-sky-700 hover:text-sky-900 hover:bg-sky-50 font-['Nothing_Pena']"
+          className={`font-['Nothing_Pena'] ${isDarkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-sky-700 hover:bg-sky-50 hover:text-sky-900'}`}
         >
           <ChevronLeft className="h-4 w-4" />
         </Button>
-        <h3 className="text-2xl font-medium text-sky-800 tracking-wider">
+        <h3 className={`text-2xl font-medium tracking-wider ${isDarkMode ? 'text-gray-200' : 'text-sky-800'}`}>
           {formatMonthYear(currentDate)}
         </h3>
         <Button
           variant="ghost"
           size="sm"
           onClick={goToNextMonth}
-          className="text-sky-700 hover:text-sky-900 hover:bg-sky-50 font-['Nothing_Pena']"
+          className={`font-['Nothing_Pena'] ${isDarkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-sky-700 hover:bg-sky-50 hover:text-sky-900'}`}
         >
           <ChevronRight className="h-4 w-4" />
         </Button>
@@ -154,7 +155,7 @@ function ClientOnlyCalendar({ taggedDays, onDayClick }: CalendarProps) {
       <div className="grid grid-cols-7 gap-1">
         {/* Weekday headers */}
         {weekdays.map((day) => (
-          <div key={day} className="text-center text-sm font-medium text-sky-700 py-2">
+          <div key={day} className={`text-center text-sm font-medium py-2 ${isDarkMode ? 'text-gray-400' : 'text-sky-700'}`}>
             {day}
           </div>
         ))}
@@ -165,7 +166,7 @@ function ClientOnlyCalendar({ taggedDays, onDayClick }: CalendarProps) {
             return (
               <div 
                 key={index} 
-                className="h-10 flex items-center justify-center text-sm text-gray-300"
+                className={`h-10 flex items-center justify-center text-sm ${isDarkMode ? 'text-gray-600' : 'text-gray-300'}`}
               >
                 {day.dayOfMonth}
               </div>
@@ -183,18 +184,27 @@ function ClientOnlyCalendar({ taggedDays, onDayClick }: CalendarProps) {
               className={cn(
                 'relative flex items-center justify-center h-10 rounded-md',
                 'transition-colors duration-200',
-                day.isToday && 'font-bold',
-                day.isPast ? 'opacity-50 cursor-not-allowed' : 'hover:bg-sky-50',
+                day.isToday && `font-bold ${isDarkMode ? 'text-white' : 'text-sky-800'}`,
+                day.isPast 
+                  ? 'opacity-50 cursor-not-allowed' 
+                  : isDarkMode 
+                    ? 'hover:bg-gray-700' 
+                    : 'hover:bg-sky-50',
                 isTagged && 'font-medium',
-                isTagged && `bg-${tagColor}-100 text-${tagColor}-800`
+                isTagged && (isDarkMode ? 'text-white' : `text-${tagColor}-800`)
               )}
               disabled={day.isPast}
-              style={isTagged ? { backgroundColor: tagColor + '40' } : {}}
+              style={isTagged ? { 
+                backgroundColor: isDarkMode 
+                  ? `${tagColor}40` 
+                  : `${tagColor}20`,
+                border: isTagged && isDarkMode ? `1px solid ${tagColor}80` : 'none'
+              } : {}}
             >
               {day.dayOfMonth}
               {isTagged && (
                 <span
-                  className="absolute bottom-1 h-2 w-2 rounded-full"
+                  className={`absolute bottom-1 h-2 w-2 rounded-full ${isDarkMode ? 'border border-gray-800' : 'border border-white'}`}
                   style={{ backgroundColor: tagColor }}
                 />
               )}

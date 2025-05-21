@@ -7,6 +7,10 @@ const BeachHouseCalendar = dynamic(
   { ssr: false }
 );
 
-export default function BeachHouseCalendarClient() {
-  return <BeachHouseCalendar />;
+interface BeachHouseCalendarClientProps {
+  isDarkMode: boolean;
+}
+
+export default function BeachHouseCalendarClient({ isDarkMode }: BeachHouseCalendarClientProps) {
+  return <BeachHouseCalendar isDarkMode={isDarkMode} />;
 }
