@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import ConvexClientProvider from './ConvexClientProvider';
 import { useIsClient, useLocalStorage } from '../hooks/use-is-client';
@@ -16,6 +16,26 @@ export default function Home() {
   const [theme, setTheme] = useLocalStorage<'light' | 'dark'>('theme', 'light');
   const [mounted, setMounted] = useState(false);
   const isDarkMode = theme === 'dark';
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  const getRandomPosition = useCallback(() => {
+    // Generate random position within a reasonable range
+    const maxX = 50; // Maximum pixels to move horizontally
+    const maxY = 30;  // Maximum pixels to move vertically
+    return {
+      x: Math.floor(Math.random() * maxX * 2) - maxX, // Random between -maxX and maxX
+      y: Math.floor(Math.random() * maxY * 2) - maxY  // Random between -maxY and maxY
+    };
+  }, []);
+
+  const handleRandomMove = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
+    setPosition(getRandomPosition());
+  }, [getRandomPosition]);
+
+  const resetPosition = useCallback(() => {
+    setPosition({ x: 0, y: 0 });
+  }, []);
 
   // Initialize theme on client side
   useEffect(() => {
@@ -104,11 +124,22 @@ export default function Home() {
           </div>
           <BeachHouseCalendarClient isDarkMode={isDarkMode} />
           <div className="flex justify-center mt-8">
-            <img 
-              src={isDarkMode ? "/assets/gifs/bat.gif" : "/assets/gifs/crab.gif"} 
-              alt={isDarkMode ? "Bat flying" : "Crab walking"} 
-              className="w-32 h-auto" 
-            />
+            <div 
+              className="inline-block cursor-pointer transition-all duration-500 ease-out"
+              style={{
+                transform: `translate(${position.x}px, ${position.y}px)`,
+                transition: 'transform 0.5s ease-out'
+              }}
+              onMouseEnter={handleRandomMove}
+              onClick={handleRandomMove}
+              onMouseLeave={resetPosition}
+            >
+              <img 
+                src={isDarkMode ? "/assets/gifs/bat.gif" : "/assets/gifs/crab.gif"} 
+                alt={isDarkMode ? "Bat flying" : "Crab walking"} 
+                className="w-32 h-auto"
+              />
+            </div>
           </div>
         </div>
       </main>
