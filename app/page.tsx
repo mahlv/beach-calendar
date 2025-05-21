@@ -28,7 +28,8 @@ export default function Home() {
     };
   }, []);
 
-  const handleRandomMove = useCallback((e: React.MouseEvent) => {
+  const handleRandomMove = useCallback((e: React.MouseEvent | React.TouchEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     setPosition(getRandomPosition());
   }, [getRandomPosition]);
@@ -125,14 +126,19 @@ export default function Home() {
           <BeachHouseCalendarClient isDarkMode={isDarkMode} />
           <div className="flex justify-center mt-8">
             <div 
-              className="inline-block cursor-pointer transition-all duration-500 ease-out"
+              className="inline-block cursor-pointer touch-pan-y select-none transition-all duration-500 ease-out"
               style={{
                 transform: `translate(${position.x}px, ${position.y}px)`,
-                transition: 'transform 0.5s ease-out'
+                transition: 'transform 0.5s ease-out',
+                userSelect: 'none',
+                WebkitUserSelect: 'none',
+                msUserSelect: 'none'
               }}
               onMouseEnter={handleRandomMove}
+              onTouchStart={handleRandomMove}
               onClick={handleRandomMove}
               onMouseLeave={resetPosition}
+              onTouchEnd={resetPosition}
             >
               <img 
                 src={isDarkMode ? "/assets/gifs/bat.gif" : "/assets/gifs/crab.gif"} 
